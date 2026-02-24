@@ -42,7 +42,6 @@ spec:
   extensions:
     org.apache.druid.extensions:
       - druid-datasketches
-      - druid-exact-count-bitmap
       - druid-kafka-extraction-namespace
       - druid-kafka-indexing-service
       - druid-kubernetes-extensions
@@ -52,7 +51,8 @@ spec:
 # One of these will be automatically added based on the value of metadataStorage.type:
 #      - mysql-metadata-storage
 #      - postgresql-metadata-storage
-    org.apache.druid.extensions.contrib: [ ]
+    org.apache.druid.extensions.contrib:
+      - druid-exact-count-bitmap
   extraCommonConfig: [ ]
   jvmOptions:
     - -Dfile.encoding=UTF-8
