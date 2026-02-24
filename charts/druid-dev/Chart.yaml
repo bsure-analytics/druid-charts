@@ -2,11 +2,11 @@ apiVersion: v2
 dependencies:
   - name: druid
     repository: file://../druid
-    version: ^0.8.0
+    version: ^0.8.1-SNAPSHOT
   - condition: operator.enabled
     alias: operator
     name: druid-operator
-    repository: https://charts.datainfra.io
+    repository: https://charts.deep.bi
     version: ^0.3.9
   - condition: metricsServer.enabled
     alias: metricsServer
@@ -34,4 +34,4 @@ maintainers:
 name: druid-dev
 sources:
   - https://github.com/bsure-analytics/druid-charts/charts/druid-dev/tree/main
-version: 0.8.0
+version: 0.8.1-SNAPSHOT
