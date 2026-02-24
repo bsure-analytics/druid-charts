@@ -42,12 +42,12 @@ spec:
   extensions:
     org.apache.druid.extensions:
       - druid-datasketches
+      - druid-exact-count-bitmap
       - druid-kafka-extraction-namespace
       - druid-kafka-indexing-service
       - druid-kubernetes-extensions
       - druid-kubernetes-overlord-extensions
       - druid-lookups-cached-global
-      - druid-multi-stage-query
       - druid-s3-extensions
 # One of these will be automatically added based on the value of metadataStorage.type:
 #      - mysql-metadata-storage
