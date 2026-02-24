@@ -4,15 +4,15 @@ dependencies:
   version: 0.8.1-SNAPSHOT
 - name: druid-operator
   repository: https://charts.deep.bi
-  version: 0.3.9
+  version: 0.4.0
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server
   version: 3.13.0
 - name: minio
   repository: https://charts.bitnami.com/bitnami
-  version: 16.0.10
+  version: 17.0.21
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
-  version: 16.7.27
-digest: sha256:96d28bb3676ef4925bb0ca6a2bdc21fa034c3fb54d8ba1eb0127d85c33184337
-generated: "2026-02-24T11:22:49.240871+01:00"
+  version: 18.4.0
+digest: sha256:2263167d58eb35221af8de6de248730b630449729cea4a3f3173d3e27b318f9f
+generated: "2026-02-24T11:28:18.160838+01:00"
