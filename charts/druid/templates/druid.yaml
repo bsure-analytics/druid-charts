@@ -130,8 +130,7 @@ spec:
             {{- range $extensionGroupAndArtifactId := $nonCoreExtensionGroupAndArtifactIds }}
             -c {{ $extensionGroupAndArtifactId }} \
             {{- end }}
-            --defaultVersion {{ $.Chart.AppVersion }} \
-            --no-default-hadoop
+            --defaultVersion {{ $.Chart.AppVersion }}
       containerName: pull-deps
       {{- with .image }}
       image: {{ .repository }}:{{ .tag | default $.Chart.AppVersion }}
