@@ -2,7 +2,7 @@ apiVersion: v2
 dependencies:
   - name: druid
     repository: file://../druid
-    version: ^0.10.2
+    version: ^0.11.0
   - condition: operator.enabled
     alias: operator
     name: druid-operator
@@ -34,4 +34,4 @@ maintainers:
 name: druid-dev
 sources:
   - https://github.com/bsure-analytics/druid-charts/charts/druid-dev/tree/main
-version: 0.10.2
+version: 0.11.0
