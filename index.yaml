@@ -2,6 +2,26 @@ apiVersion: v1
 entries:
   druid:
   - apiVersion: v2
+    appVersion: 37.0.0
+    created: "2026-05-17T16:01:32.900828169Z"
+    description: A Helm chart for deploying Apache Druid in a production environment.
+    digest: 8b169a2bbaa009b962206b1882012a887d6be6d210d451416a3324bef030232f
+    home: https://github.com/bsure-analytics/druid-charts
+    keywords:
+    - Apache Druid
+    - Druid
+    - production
+    - prod
+    maintainers:
+    - name: Christian Schlichtherle
+      url: https://github.com/christian-schlichtherle
+    name: druid
+    sources:
+    - https://github.com/bsure-analytics/druid-charts/charts/druid/tree/main
+    urls:
+    - https://github.com/bsure-analytics/druid-charts/releases/download/druid-0.11.0/druid-0.11.0.tgz
+    version: 0.11.0
+  - apiVersion: v2
     appVersion: 36.0.0
     created: "2026-02-24T15:59:56.498187621Z"
     description: A Helm chart for deploying Apache Druid in a production environment.
@@ -792,4 +812,4 @@ entries:
     urls:
     - https://github.com/bsure-analytics/druid-charts/releases/download/druid-dev-0.7.0/druid-dev-0.7.0.tgz
     version: 0.7.0
-generated: "2026-02-24T16:01:00.839448528Z"
+generated: "2026-05-17T16:01:32.901003629Z"
