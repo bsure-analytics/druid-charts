@@ -31,7 +31,7 @@ instead. Versions up to 0.11.0 remain on the legacy GitHub Pages index
 For deployment to a development environment, e.g. Kind (Kubernetes in Docker):
 
 ```shell
-helm upgrade druid oci://ghcr.io/bsure-analytics/charts/druid-dev --version 0.12.0 --create-namespace --install --namespace druid
+helm upgrade druid oci://ghcr.io/bsure-analytics/charts/druid-dev --version 0.12.1 --create-namespace --install --namespace druid
 helm test druid --namespace druid
 kubectl port-forward --namespace druid services/druid-client-routers 8088:80 &
 kubectl port-forward --namespace druid services/druid-minio 9001:9001 &
@@ -46,7 +46,7 @@ respectively.
 For deployment to a production environment:
 
 ```shell
-helm upgrade druid oci://ghcr.io/bsure-analytics/charts/druid --version 0.12.0 --create-namespace --install --namespace druid --values my-values.yaml 
+helm upgrade druid oci://ghcr.io/bsure-analytics/charts/druid --version 0.12.1 --create-namespace --install --namespace druid --values my-values.yaml 
 ```
 
 As an example for the `my-values.yaml` file, you could copy and edit the [values.yaml](charts/druid-dev/values.yaml)
