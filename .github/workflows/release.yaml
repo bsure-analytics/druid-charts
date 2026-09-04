@@ -1,52 +1,52 @@
-# See https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions
-# and https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-static-site-generators-with-nodejs :
+# Publishes both charts as OCI artifacts under oci://ghcr.io/bsure-analytics/charts, a
+# charts/ prefix so chart names cannot collide with container images in the same GHCR
+# namespace. Triggered by pushing a semver tag (git tag v0.12.0 && git push origin
+# v0.12.0). Chart.yaml is the source of truth for the version: the tag has to match it,
+# and nothing is published unless it does.
 ---
-env:
-  CR_TOKEN: "${{ secrets.CR_TOKEN }}"
 jobs:
-  release-druid:
-    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+  publish:
+    # ubuntu-latest rather than the org's self-hosted runners: this repository is public,
+    # and runner groups do not serve public repositories by default.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          # chart-releaser-action NEEDS this:
-          fetch-depth: 0
-      - name: Configure git
+      - uses: actions/checkout@v7
+      - uses: azure/setup-helm@v5
+      - name: Verify the chart versions match the tag
         run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      - name: Package druid chart
-        run: helm package charts/druid --destination .cr-release-packages
-      - uses: helm/chart-releaser-action@main
-        with:
-          skip_packaging: true
-  release-druid-dev:
-    needs: release-druid
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          # chart-releaser-action NEEDS this:
-          fetch-depth: 0
-      - name: Configure git
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      - name: Update and package druid-dev chart
-        run: |
-          for i in $(seq 1 10); do
-            sleep 30
-            make release && break
+          version="${GITHUB_REF_NAME#v}"
+          for chart in charts/druid charts/druid-dev; do
+            declared="$(helm show chart "$chart" | awk '/^version:/ {print $2}')"
+            if [ "$declared" != "$version" ]; then
+              echo "::error::$chart declares version $declared, but the tag says $version"
+              exit 1
+            fi
+            echo "OK: $chart -> $declared"
           done
-          helm package charts/druid-dev --destination .cr-release-packages
-      - uses: helm/chart-releaser-action@main
-        with:
-          mark_as_latest: false
-          skip_packaging: true
+      - name: Lint and package
+        # dependency build, not update: the committed Chart.lock decides which subchart
+        # versions druid-dev bundles, and it fails if Chart.yaml and the lock disagree --
+        # i.e. if the release commit skipped make dependency-update.
+        run: |
+          helm lint charts/druid
+          helm dependency build charts/druid-dev
+          helm lint charts/druid-dev
+          helm package charts/druid --destination dist/
+          helm package charts/druid-dev --destination dist/
+      - name: Log in to ghcr.io
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io \
+            --username "${{ github.actor }}" \
+            --password-stdin
+      - name: Push
+        run: |
+          for package in dist/*.tgz; do
+            helm push "$package" oci://ghcr.io/bsure-analytics/charts
+          done
+name: Release
 on:
   push:
-    # Publish semver tags as releases:
     tags: [ 'v*.*.*' ]
 permissions:
-  contents: write
+  contents: read
+  packages: write # push the OCI artifacts to ghcr.io

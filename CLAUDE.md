@@ -50,9 +50,9 @@ Both charts share the same version number. The `druid` chart's `Chart.yaml` is t
 Release process:
 1. Bump version in `charts/druid/Chart.yaml` (and `appVersion` when Druid itself is bumped)
 2. Run `make dependency-update` from `charts/druid-dev` (or root) to sync
-3. Tag with `v*.*.*` — GitHub Actions packages both charts and publishes via chart-releaser to GitHub Pages
+3. Tag `v<version>` and push the tag — GitHub Actions verifies the tag equals both `Chart.yaml` versions, lints, packages both charts and pushes them to `oci://ghcr.io/bsure-analytics/charts`
 
-During development, the `druid` dependency uses `repository: file://../druid`. The `make release` target switches this to the GitHub Pages URL for non-SNAPSHOT versions.
+The `druid-dev` dependency stays on `repository: file://../druid` always — `helm package` bundles the local `druid` chart into `druid-dev`'s `.tgz`, so there is no repository URL to switch. The old workflow's `[skip ci]` head-commit-message guard is gone with it: the new workflow triggers on tags only, so there is nothing for it to guard.
 
 ## Values Structure
 

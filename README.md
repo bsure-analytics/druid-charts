@@ -21,19 +21,17 @@ This repository provides two opinionated Helm charts for Apache Druid:
 
 # Setup
 
-Add the repository to Helm:
-
-```shell
-helm repo add druid-charts https://bsure-analytics.github.io/druid-charts
-helm repo update
-```
+Both charts are published as OCI artifacts at `oci://ghcr.io/bsure-analytics/charts/druid`
+and `oci://ghcr.io/bsure-analytics/charts/druid-dev` — no `helm repo add`, pin `--version`
+instead. Versions up to 0.11.0 remain on the legacy GitHub Pages index
+`https://bsure-analytics.github.io/druid-charts`.
 
 ## Development Environment
 
 For deployment to a development environment, e.g. Kind (Kubernetes in Docker):
 
 ```shell
-helm upgrade druid druid-charts/druid-dev --create-namespace --install --namespace druid
+helm upgrade druid oci://ghcr.io/bsure-analytics/charts/druid-dev --version 0.12.0 --create-namespace --install --namespace druid
 helm test druid --namespace druid
 kubectl port-forward --namespace druid services/druid-client-routers 8088:80 &
 kubectl port-forward --namespace druid services/druid-minio 9001:9001 &
@@ -48,7 +46,7 @@ respectively.
 For deployment to a production environment:
 
 ```shell
-helm upgrade druid druid-charts/druid --create-namespace --install --namespace druid --values my-values.yaml 
+helm upgrade druid oci://ghcr.io/bsure-analytics/charts/druid --version 0.12.0 --create-namespace --install --namespace druid --values my-values.yaml 
 ```
 
 As an example for the `my-values.yaml` file, you could copy and edit the [values.yaml](charts/druid-dev/values.yaml)
