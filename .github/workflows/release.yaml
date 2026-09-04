@@ -23,6 +23,16 @@ jobs:
             fi
             echo "OK: $chart -> $declared"
           done
+      - name: Add chart repositories
+        # helm dependency build resolves the committed Chart.lock against the runner's
+        # local Helm repo config rather than fetching each dependency's URL directly --
+        # that is what helm dependency update does. A fresh runner starts with none
+        # registered, so charts/druid-dev's three unique HTTP(S) subchart repositories
+        # need adding before the build step below can resolve them.
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add deepbi https://charts.deep.bi
+          helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server
       - name: Lint and package
         # dependency build, not update: the committed Chart.lock decides which subchart
         # versions druid-dev bundles, and it fails if Chart.yaml and the lock disagree --
