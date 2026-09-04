@@ -14,6 +14,10 @@ This repository provides two opinionated Helm charts for Apache Druid:
 + The Kubernetes API replaces ZooKeeper for service discovery, coordination and leader election.
 + Kubernetes jobs replace the middle manager for running ingestion tasks.
 + Existing S3 buckets are used for storing indexing segments and logs.
++ Every node type ships a `maxUnavailable: 1` PodDisruptionBudget through the Druid
+  Operator's per-node `podDisruptionBudgetSpec`, so a node drain cannot evict more than
+  one replica of the same node type at a time. Override or disable it per node type with
+  `spec.nodes.<name>.podDisruptionBudget`.
 
 # Setup
 

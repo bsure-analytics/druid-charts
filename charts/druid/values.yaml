@@ -103,6 +103,13 @@ spec:
       nodeSelector: { }
       nodeType: broker
       podAnnotations: { }
+      # Rendered as the operator's podDisruptionBudgetSpec, which becomes a policy/v1
+      # PodDisruptionBudget named after the node spec (druid-<fullname>-<node>) selecting
+      # exactly its pods. maxUnavailable: 1 is a no-op at one replica and real protection
+      # at two or more. Set to { } to render none; minAvailable works too but makes a
+      # single replica undrainable.
+      podDisruptionBudget:
+        maxUnavailable: 1
       podLabels: { }
       replicas: 1
       resources: { }
@@ -129,6 +136,8 @@ spec:
       nodeSelector: { }
       nodeType: historical
       podAnnotations: { }
+      podDisruptionBudget:
+        maxUnavailable: 1
       podLabels: { }
       replicas: 0
       resources: { }
@@ -160,6 +169,8 @@ spec:
       nodeSelector: { }
       nodeType: coordinator
       podAnnotations: { }
+      podDisruptionBudget:
+        maxUnavailable: 1
       podLabels: { }
       replicas: 1
       resources: { }
@@ -200,6 +211,8 @@ spec:
       nodeSelector: { }
       nodeType: historical
       podAnnotations: { }
+      podDisruptionBudget:
+        maxUnavailable: 1
       podLabels: { }
       replicas: 1
       resources: { }
@@ -226,6 +239,8 @@ spec:
       nodeSelector: { }
       nodeType: historical
       podAnnotations: { }
+      podDisruptionBudget:
+        maxUnavailable: 1
       podLabels: { }
       replicas: 0
       resources: { }
@@ -259,6 +274,8 @@ spec:
       nodeSelector: { }
       nodeType: router
       podAnnotations: { }
+      podDisruptionBudget:
+        maxUnavailable: 1
       podLabels: { }
       replicas: 1
       resources: { }

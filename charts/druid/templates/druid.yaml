@@ -58,6 +58,9 @@ nodeType: {{ .nodeType }}
 {{- with .podAnnotations }}
 podAnnotations: {{- toYaml . | nindent 2 }}
 {{- end }}
+{{- with .podDisruptionBudget }}
+podDisruptionBudgetSpec: {{- toYaml . | nindent 2 }}
+{{- end }}
 {{- with .podLabels }}
 podLabels: {{- toYaml . | nindent 2 }}
 {{- end }}

@@ -57,7 +57,7 @@ During development, the `druid` dependency uses `repository: file://../druid`. T
 ## Values Structure
 
 `charts/druid/values.yaml` — top-level keys:
-- `spec.nodes.<name>` — per-node-type config (replicas, JVM, resources, storage, runtimeProperties)
+- `spec.nodes.<name>` — per-node-type config (replicas, JVM, resources, storage, runtimeProperties, podDisruptionBudget)
 - `spec.extensions` — Druid extension lists
 - `spec.metadataStorage` — database connector config
 - `spec.s3` — segment and log bucket configuration
