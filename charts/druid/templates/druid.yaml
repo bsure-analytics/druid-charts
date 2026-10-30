@@ -93,6 +93,7 @@ volumeClaimTemplates:
 {{- end -}}
 
 {{- with $.Values.spec }}
+{{- $druidVersion := .image.tag | default $.Chart.AppVersion }}
 {{- $metadataStorage := .metadataStorage }}
 {{- $extensionLoadList := list }}
 {{- $nonCoreExtensionGroupAndArtifactIds := list }}
@@ -133,10 +134,10 @@ spec:
             {{- range $extensionGroupAndArtifactId := $nonCoreExtensionGroupAndArtifactIds }}
             -c {{ $extensionGroupAndArtifactId }} \
             {{- end }}
-            --defaultVersion {{ $.Chart.AppVersion }}
+            --defaultVersion {{ $druidVersion }}
       containerName: pull-deps
       {{- with .image }}
-      image: {{ .repository }}:{{ .tag | default $.Chart.AppVersion }}
+      image: {{ .repository }}:{{ $druidVersion }}
       {{- end }}
       runAsInit: true
       volumeMounts:
@@ -177,7 +178,7 @@ spec:
     {{- with .extraEnv }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-    {{- if ge (.image.tag | default $.Chart.AppVersion | semver).Major 33 }}
+    {{- if ge ($druidVersion | semver).Major 33 }}
     {{- /* https://github.com/apache/druid/releases/tag/druid-33.0.0#33.0.0-upgrade-notes-and-incompatible-changes-upgrade-notes-kubernetes-deployments */}}
     - name: DRUID_SET_HOST_IP
       value: "1"
@@ -205,7 +206,7 @@ spec:
   extraCommonConfig: {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with .image }}
-  image: {{ .repository }}:{{ .tag | default $.Chart.AppVersion }}
+  image: {{ .repository }}:{{ $druidVersion }}
   {{- with .pull }}
   {{- with .policy }}
   imagePullPolicy: {{ . }}
